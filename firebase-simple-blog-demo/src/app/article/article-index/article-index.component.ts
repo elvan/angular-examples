@@ -1,6 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface Article {
+  title: string;
+  body: number;
+}
+
+export interface ArticleId extends Article {
+  id: string;
+}
 
 @Component({
   selector: 'app-article-index',
@@ -8,10 +21,20 @@ import { Observable } from 'rxjs';
   styleUrls: ['./article-index.component.css'],
 })
 export class ArticleIndexComponent implements OnInit {
-  articles: Observable<any[]>;
+  private articleCollection: AngularFirestoreCollection<Article>;
+  articles: Observable<ArticleId[]>;
 
   constructor(private firestore: AngularFirestore) {
-    this.articles = this.firestore.collection('articles').valueChanges();
+    this.articleCollection = this.firestore.collection<Article>('articles');
+    this.articles = this.articleCollection.snapshotChanges().pipe(
+      map((actions) =>
+        actions.map((a) => {
+          const data = a.payload.doc.data() as Article;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      )
+    );
   }
 
   ngOnInit(): void {}

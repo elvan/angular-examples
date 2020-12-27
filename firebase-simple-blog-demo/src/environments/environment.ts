@@ -5,6 +5,7 @@ import { firebaseConfig } from './firebaseConfig';
 
 export const environment = {
   production: false,
+  useEmulators: true,
   firebase: firebaseConfig,
 };
 

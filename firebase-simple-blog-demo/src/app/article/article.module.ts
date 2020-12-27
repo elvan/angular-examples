@@ -1,15 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { ArticleRoutingModule } from './article-routing.module';
+import { NgModule } from '@angular/core';
 import { ArticleIndexComponent } from './article-index/article-index.component';
-
+import { ArticleRoutingModule } from './article-routing.module';
+import { ArticleShowComponent } from './article-show/article-show.component';
 
 @NgModule({
-  declarations: [ArticleIndexComponent],
-  imports: [
-    CommonModule,
-    ArticleRoutingModule
-  ]
+  declarations: [ArticleIndexComponent, ArticleShowComponent],
+  imports: [CommonModule, ArticleRoutingModule],
 })
-export class ArticleModule { }
+export class ArticleModule {}
